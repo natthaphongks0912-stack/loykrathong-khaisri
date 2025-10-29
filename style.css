@@ -1,5 +1,10 @@
 /* Reset */
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
 
 /* Background Video */
 #bgVideo {
@@ -20,8 +25,12 @@ header {
   text-shadow: 2px 2px 5px black;
 }
 #logo {
-  max-width: 100px;
+  max-width: 100px; /* Desktop size */
   height: auto;
+}
+header h1 {
+  font-size: 24px;
+  line-height: 1.2;
 }
 
 /* Controls */
@@ -37,13 +46,14 @@ header {
   border-radius: 10px;
 }
 
+/* Krathong choices */
 #krathongChoices {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
 }
 #krathongChoices img {
-  width: 50px;
+  width: 50px; /* Desktop size */
   height: auto;
   cursor: pointer;
   border: 2px solid transparent;
@@ -53,6 +63,7 @@ header {
   border-color: yellow;
 }
 
+/* Textarea for wish */
 #wishInput {
   width: 100%;
   padding: 5px;
@@ -60,8 +71,10 @@ header {
   border: none;
   margin-bottom: 10px;
   resize: none;
+  font-size: 16px;
 }
 
+/* Float button */
 #btnFloat {
   width: 100%;
   padding: 10px;
@@ -73,7 +86,7 @@ header {
   font-weight: bold;
 }
 
-/* Floating Area */
+/* Floating area */
 #floatingArea {
   position: fixed;
   top: 0;
@@ -83,7 +96,7 @@ header {
   pointer-events: none;
 }
 
-/* Krathong */
+/* Krathong element */
 .krathong {
   position: absolute;
   display: flex;
@@ -91,7 +104,7 @@ header {
   align-items: center;
 }
 .krathong img {
-  width: 80px;
+  width: 80px; /* Desktop size */
 }
 .wishText {
   color: white;
@@ -100,10 +113,55 @@ header {
   white-space: nowrap;
 }
 
-/* Responsive */
-@media(max-width:600px){
-  #krathongChoices img { width: 40px; }
-  #btnFloat { font-size: 14px; padding: 8px; }
-  .krathong img { width: 60px; }
-  .wishText { font-size: 12px; }
+/* Responsive for Mobile */
+@media (max-width: 600px) {
+  /* Logo */
+  #logo {
+    max-width: 60px;
+  }
+
+  /* Header */
+  header h1 {
+    font-size: 18px;
+  }
+
+  /* Controls */
+  #controls {
+    width: 95%;
+    padding: 8px;
+  }
+
+  /* Button */
+  #btnFloat {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  /* Krathong choices */
+  #krathongChoices img {
+    width: 40px;
+  }
+
+  /* Floating krathong */
+  .krathong img {
+    width: 60px;
+  }
+
+  /* Wish text on krathong */
+  .wishText {
+    font-size: 12px;
+  }
+
+  /* Textarea */
+  #wishInput {
+    font-size: 14px;
+    padding: 4px;
+  }
 }
+
+/* Optional: responsive for tablet */
+@media (max-width: 900px) {
+  header h1 {
+    font-size: 20px;
+  }
+  #kra
