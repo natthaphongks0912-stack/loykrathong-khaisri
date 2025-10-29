@@ -1,10 +1,5 @@
 /* Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: sans-serif;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
 
 /* Background Video */
 #bgVideo {
@@ -17,26 +12,31 @@
   z-index: -1;
 }
 
-/* Header */
+/* Header - อยู่ตรงกลางหน้าจอ */
 header {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   text-align: center;
   color: white;
-  padding: 20px 10px;
   text-shadow: 2px 2px 5px black;
+  z-index: 10;
+  padding: 10px;
 }
 #logo {
-  max-width: 50px; /* Desktop size */
+  max-width: 120px; /* Desktop size */
   height: auto;
 }
 header h1 {
-  font-size: 24px;
+  font-size: 32px;
   line-height: 1.2;
 }
 
-/* Controls */
+/* Controls - อยู่ล่าง header */
 #controls {
   position: fixed;
-  bottom: 10px;
+  top: 70%;
   left: 50%;
   transform: translateX(-50%);
   width: 90%;
@@ -44,6 +44,7 @@ header h1 {
   background: rgba(0,0,0,0.4);
   padding: 10px;
   border-radius: 10px;
+  z-index: 10;
 }
 
 /* Krathong choices */
@@ -53,17 +54,15 @@ header h1 {
   margin-bottom: 10px;
 }
 #krathongChoices img {
-  width: 50px; /* Desktop size */
+  width: 50px;
   height: auto;
   cursor: pointer;
   border: 2px solid transparent;
   border-radius: 5px;
 }
-#krathongChoices img.selected {
-  border-color: yellow;
-}
+#krathongChoices img.selected { border-color: yellow; }
 
-/* Textarea for wish */
+/* Textarea */
 #wishInput {
   width: 100%;
   padding: 5px;
@@ -74,7 +73,7 @@ header h1 {
   font-size: 16px;
 }
 
-/* Float button */
+/* Button */
 #btnFloat {
   width: 100%;
   padding: 10px;
@@ -86,7 +85,7 @@ header h1 {
   font-weight: bold;
 }
 
-/* Floating area */
+/* Floating Area */
 #floatingArea {
   position: fixed;
   top: 0;
@@ -96,16 +95,14 @@ header h1 {
   pointer-events: none;
 }
 
-/* Krathong element */
+/* Krathong ลอย */
 .krathong {
   position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.krathong img {
-  width: 80px; /* Desktop size */
-}
+.krathong img { width: 80px; }
 .wishText {
   color: white;
   font-size: 14px;
@@ -113,56 +110,21 @@ header h1 {
   white-space: nowrap;
 }
 
-/* Responsive for Mobile */
+/* Mobile */
 @media (max-width: 600px) {
-  /* Logo */
-  #logo {
-    max-width: 60px;
-  }
-
-  /* Header */
-  header h1 {
-    font-size: 18px;
-  }
-
-  /* Controls */
-  #controls {
-    width: 95%;
-    padding: 8px;
-  }
-
-  /* Button */
-  #btnFloat {
-    font-size: 14px;
-    padding: 8px;
-  }
-
-  /* Krathong choices */
-  #krathongChoices img {
-    width: 40px;
-  }
-
-  /* Floating krathong */
-  .krathong img {
-    width: 60px;
-  }
-
-  /* Wish text on krathong */
-  .wishText {
-    font-size: 12px;
-  }
-
-  /* Textarea */
-  #wishInput {
-    font-size: 14px;
-    padding: 4px;
-  }
+  #logo { max-width: 60px; }
+  header h1 { font-size: 18px; }
+  #controls { width: 95%; padding: 8px; top: 75%; }
+  #krathongChoices img { width: 40px; }
+  .krathong img { width: 60px; }
+  .wishText { font-size: 12px; }
+  #wishInput { font-size: 14px; padding: 4px; }
 }
 
-/* Optional: responsive for tablet */
+/* Tablet */
 @media (max-width: 900px) {
-  header h1 {
-    font-size: 20px;
-  }
-  #kra
-
+  header h1 { font-size: 24px; }
+  #krathongChoices img { width: 45px; }
+  .krathong img { width: 70px; }
+  .wishText { font-size: 13px; }
+}
