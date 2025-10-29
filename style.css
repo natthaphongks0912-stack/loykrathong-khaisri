@@ -140,22 +140,23 @@
 }
 
 .school-logo {
-  width: 100px;          /* ขนาด Desktop */
+  width: 60px;          /* ขนาด Desktop */
   height: auto;
   display: block;
-  margin: 0 auto 5px auto;  /* กึ่งกลาง + เว้นระยะด้านล่าง */
+  margin: 5px auto 0 auto;  /* เว้นระยะบน และกึ่งกลาง */
 }
 
 /* ข้อความ */
 .school-name {
   font-size: 24px;
+  text-align: center;   /* ข้อความอยู่กลาง */
 }
 
 /* Responsive */
 @media screen and (max-width: 600px) {
   .school-logo {
     width: 40px;
-    margin-bottom: 3px;
+    margin-top: 3px;
   }
   .school-name {
     font-size: 18px;
