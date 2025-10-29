@@ -1,7 +1,5 @@
-document.addEventListener("DOMContentLoaded", () => {
-
-  // 🔥 Firebase Config
-  const firebaseConfig = {
+// ===================== Firebase Config =====================
+const firebaseConfig = {
     apiKey: "AIzaSyChhf-4w_Hya9kj_Hy_hNBJk_vlHzQWYnA",
     authDomain: "loykrathongkhaisri.firebaseapp.com",
     databaseURL: "https://loykrathongkhaisri-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -10,92 +8,76 @@ document.addEventListener("DOMContentLoaded", () => {
     messagingSenderId: "63769787285",
     appId: "1:63769787285:web:72b591fc1bcc486364549c",
     measurementId: "G-00Y3C1QE7M"
-  };
+};
 
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
-  // DOM
-  const btnFloat = document.getElementById("btnFloat");
-  const wishInput = document.getElementById("wishInput");
-  const floatingArea = document.getElementById("floatingArea");
+// ===================== DOM Elements =====================
+const btnFloat = document.getElementById("btnFloat");
+const wishInput = document.getElementById("wishInput");
+const floatingArea = document.getElementById("floatingArea");
+const choices = document.querySelectorAll("#krathongChoices img");
 
-  // เลือกกระทง
-  let selectedKrathong = "1.png"; 
-  const choices = document.querySelectorAll("#krathongChoices img");
-  choices.forEach(choice => {
+let selectedKrathong = "1.png"; // default
+
+// ===================== เลือกกระทง =====================
+choices.forEach(choice => {
     choice.addEventListener("click", () => {
-      choices.forEach(c => c.classList.remove("selected"));
-      choice.classList.add("selected");
-      selectedKrathong = choice.dataset.src;
+        choices.forEach(c => c.classList.remove("selected"));
+        choice.classList.add("selected");
+        selectedKrathong = choice.dataset.src;
     });
-  });
+});
 
-  const sessionId = 'session_' + Date.now() + '_' + Math.floor(Math.random()*1000);
-  const sessionStart = Date.now();
+// ===================== SessionId =====================
+const sessionId = Date.now(); // ใช้ sessionId ป้องกันโหลดกระทงเก่า
 
-  // ลบกระทงเก่าเกิน 2 นาที (120,000 ms) แบบ client-side
-  db.ref("krathongs").once("value", snapshot => {
-    const now = Date.now();
-    snapshot.forEach(child => {
-      const data = child.val();
-      if(data.time && (now - data.time > 120000)){
-        db.ref("krathongs").child(child.key).remove();
-      }
-    });
-  });
-
-  // ปุ่มปล่อยกระทง
-  btnFloat.addEventListener("click", () => {
+// ===================== ปุ่มลอยกระทง =====================
+btnFloat.addEventListener("click", () => {
     const wishText = wishInput.value.trim();
     if (!wishText) {
-      alert("กรุณาเขียนคำอธิษฐานก่อนลอยกระทง 🌕");
-      return;
+        alert("กรุณาเขียนคำอธิษฐานก่อนลอยกระทง 🌕");
+        return;
     }
 
     const krathong = {
-      img: selectedKrathong,
-      wish: wishText,
-      time: Date.now(),
-      sessionId: sessionId
+        img: selectedKrathong,
+        wish: wishText,
+        time: Date.now(),
+        session: sessionId
     };
 
-    createKrathongElement(krathong.img, krathong.wish);
     db.ref("krathongs").push(krathong);
     wishInput.value = "";
-  });
+});
 
-  wishInput.addEventListener("keypress", (e) => {
-    if(e.key === "Enter"){
-      e.preventDefault();
-      btnFloat.click();
-    }
-  });
-
-  // ฟังกระทงใหม่แบบ realtime
-  db.ref("krathongs").on("child_added", snapshot => {
+// ===================== ฟังข้อมูล Realtime =====================
+db.ref("krathongs").on("child_added", snapshot => {
     const data = snapshot.val();
-    const now = Date.now();
 
-    // แสดงเฉพาะกระทงไม่เกิน 2 นาที และไม่ใช่ของ session ตัวเองที่โหลดก่อนหน้า
-    if(now - data.time <= 120000 && data.time >= sessionStart && data.sessionId !== sessionId){
-      createKrathongElement(data.img, data.wish);
-    }
-  });
+    // ไม่โหลดกระทงเก่าเกิน 2 นาที
+    if (Date.now() - data.time > 2*60*1000) return;
 
-  // สร้างกระทงและลอยแบบสุ่ม
-  function createKrathongElement(imgSrc, wishText){
+    createKrathongElement(data.img, data.wish);
+});
+
+// ===================== สร้างกระทง =====================
+function createKrathongElement(imgSrc, wishText) {
     const krathong = document.createElement("div");
     krathong.className = "krathong";
 
-    // ลอยซ้าย->ขวา หรือ ขวา->ซ้าย แบบสุ่ม
-    const direction = Math.random() < 0.5 ? "ltr" : "rtl";
-    krathong.style.bottom = Math.random()*200 + "px";
+    // Random start position: ซ้ายหรือขวา
+    const fromLeft = Math.random() < 0.5;
+    krathong.style.bottom = Math.random() * 200 + "px";
+    krathong.style.left = fromLeft ? "-100px" : window.innerWidth + "px";
 
+    // รูปกระทง
     const img = document.createElement("img");
     img.src = imgSrc;
     krathong.appendChild(img);
 
+    // คำอธิษฐาน
     const wish = document.createElement("div");
     wish.className = "wishText";
     wish.textContent = wishText;
@@ -103,22 +85,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
     floatingArea.appendChild(krathong);
 
-    // ความเร็วลอยสุ่ม 10-15 วินาที
+    // Animation: 10–15 วินาที
     const duration = 10000 + Math.random()*5000;
+    const distance = window.innerWidth + 200;
+
     krathong.style.transition = `transform ${duration}ms linear, opacity ${duration}ms linear`;
+    setTimeout(() => {
+        krathong.style.transform = fromLeft
+            ? `translateX(${distance}px)`
+            : `translateX(${-distance}px)`;
+        krathong.style.opacity = 0;
+    }, 50);
 
-    setTimeout(()=>{
-      if(direction === "ltr"){
-        krathong.style.left = "-100px"; 
-        krathong.style.transform = `translateX(${window.innerWidth + 200}px)`;
-      } else {
-        krathong.style.left = window.innerWidth + "px"; 
-        krathong.style.transform = `translateX(-${window.innerWidth + 200}px)`;
-      }
-      krathong.style.opacity = 0;
-    },50);
+    // ลบหลัง animation
+    setTimeout(() => krathong.remove(), duration + 1000);
+}
 
-    setTimeout(()=> krathong.remove(), duration + 1000);
-  }
-
-});
+// ===================== ลบกระทงเก่าเกิน 2 นาทีจาก Database =====================
+setInterval(() => {
+    db.ref("krathongs").once("value", snapshot => {
+        snapshot.forEach(child => {
+            const data = child.val();
+            if (Date.now() - data.time > 2*60*1000) {
+                db.ref("krathongs/" + child.key).remove();
+            }
+        });
+    });
+}, 60*1000); // ตรวจทุก 1 นาที
