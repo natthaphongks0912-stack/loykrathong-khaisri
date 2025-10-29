@@ -116,7 +116,7 @@ html, body {
 }
 
 .krathong img {
-  width: clamp(100px, 12vw, 200px);
+  width: clamp(200px, 12vw, 300px);
   height: auto;
 }
 
@@ -147,6 +147,7 @@ html, body {
   vertical-align: middle;
   margin-right: 1vw;
 }
+
 
 
 
