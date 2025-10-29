@@ -31,8 +31,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // สร้าง sessionId
   const sessionId = 'session_' + Date.now() + '_' + Math.floor(Math.random()*1000);
+  const sessionStart = Date.now();
+
+  // ลบกระทงเก่าเกิน 2 นาที (120,000 ms) แบบ client-side
+  db.ref("krathongs").once("value", snapshot => {
+    const now = Date.now();
+    snapshot.forEach(child => {
+      const data = child.val();
+      if(data.time && (now - data.time > 120000)){
+        db.ref("krathongs").child(child.key).remove();
+      }
+    });
+  });
 
   // ปุ่มปล่อยกระทง
   btnFloat.addEventListener("click", () => {
@@ -42,11 +53,8 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // สุ่มกระทงจากตัวเลือก 1-5 ถ้าอยากสุ่มทุกครั้ง
-    const krathongImg = selectedKrathong; 
-
     const krathong = {
-      img: krathongImg,
+      img: selectedKrathong,
       wish: wishText,
       time: Date.now(),
       sessionId: sessionId
@@ -57,7 +65,6 @@ document.addEventListener("DOMContentLoaded", () => {
     wishInput.value = "";
   });
 
-  // Enter ใน textarea
   wishInput.addEventListener("keypress", (e) => {
     if(e.key === "Enter"){
       e.preventDefault();
@@ -65,10 +72,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ฟังกระทงอื่น
+  // ฟังกระทงใหม่แบบ realtime
   db.ref("krathongs").on("child_added", snapshot => {
     const data = snapshot.val();
-    if (!data.sessionId || data.sessionId !== sessionId) {
+    const now = Date.now();
+
+    // แสดงเฉพาะกระทงไม่เกิน 2 นาที และไม่ใช่ของ session ตัวเองที่โหลดก่อนหน้า
+    if(now - data.time <= 120000 && data.time >= sessionStart && data.sessionId !== sessionId){
       createKrathongElement(data.img, data.wish);
     }
   });
@@ -78,10 +88,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const krathong = document.createElement("div");
     krathong.className = "krathong";
 
-    // เลือกลอยซ้าย->ขวา หรือ ขวา->ซ้าย
+    // ลอยซ้าย->ขวา หรือ ขวา->ซ้าย แบบสุ่ม
     const direction = Math.random() < 0.5 ? "ltr" : "rtl";
-    const bottomPos = Math.random()*200 + "px";
-    krathong.style.bottom = bottomPos;
+    krathong.style.bottom = Math.random()*200 + "px";
 
     const img = document.createElement("img");
     img.src = imgSrc;
@@ -94,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     floatingArea.appendChild(krathong);
 
-    // สุ่มความเร็ว 10-15 วิ
+    // ความเร็วลอยสุ่ม 10-15 วินาที
     const duration = 10000 + Math.random()*5000;
     krathong.style.transition = `transform ${duration}ms linear, opacity ${duration}ms linear`;
 
