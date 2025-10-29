@@ -5,37 +5,63 @@
   padding: 0;
 }
 
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* ไม่ให้เลื่อน */
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+}
+
 /* ===================== UI Container ด้านบน ===================== */
 .ui-container {
-  position: fixed;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 95%;
-  max-width: 800px;
-  background: rgba(0,0,0,0.5);
-  padding: 10px 20px;
-  border-radius: 10px;
+  flex: 0 0 auto;
+  width: 80%;         /* ลดจาก 95% → 80% */
+  max-width: 600px;   /* ลดจาก 90vw → 600px */
+  margin: 1vh auto 0 auto;
+  background: rgba(138, 168, 248, 0.3); /* จางลงเล็กน้อย */
+  padding: 0.5vh 1vw; /* ลด padding */
+  border-radius: 1vw;
   text-align: center;
   z-index: 1000;
 }
 
 /* ส่วนหัว */
 .header {
-  font-size: 24px;
+  font-size: clamp(1rem, 2.5vw, 1.8rem); /* ปรับให้เล็กลงเล็กน้อย */
   color: #fff;
-  margin-bottom: 10px;
-  line-height: 1.2;
+  text-shadow: 0 0 10px #FFD700, 0 0 20px #FFA500, 0 0 30px #FF4500;
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 5px #ff6a00, 0 0 10px #FFA500, 0 0 15px #FF4500;
+  }
+  to {
+    text-shadow: 0 0 15px #ff6200, 0 0 25px #FFA500, 0 0 35px #FF4500;
+  }
 }
 
 /* ===================== กระทงเลือก ===================== */
 #krathongChoices img {
-  width: 50px;
-  margin: 0 5px;
+  width: clamp(50px, 8vw, 90px);
+  margin: 0 0.5vw;
   cursor: pointer;
   border: 2px solid transparent;
-  border-radius: 5px;
+  border-radius: 0.5vw;
   transition: transform 0.2s, border-color 0.2s;
+  animation: glowKrathong 2s ease-in-out infinite alternate;
+}
+
+@keyframes glowKrathong {
+  from {
+    filter: drop-shadow(0 0 5px #FFD700) drop-shadow(0 0 10px #FF8C00);
+  }
+  to {
+    filter: drop-shadow(0 0 15px #FFD700) drop-shadow(0 0 25px #FF8C00);
+  }
 }
 
 #krathongChoices img.selected {
@@ -45,25 +71,26 @@
 
 /* ===================== Input & Button ===================== */
 #wishInput {
-  width: 70%;
+  width: 50%;
   max-width: 400px;
-  padding: 5px 10px;
-  margin: 5px 0;
-  border-radius: 5px;
+  padding: 0.5vh 1vw;
+  margin: 0.5vh 0;
+  border-radius: 0.5vw;
   border: none;
-  font-size: 16px;
+  font-size: clamp(0.8rem, 1.8vw, 1rem);
 }
 
 #btnFloat {
-  padding: 6px 15px;
-  border-radius: 5px;
-  margin-left: 5px;
+  padding: 0.5vh 1vw;
+  border-radius: 0.5vw;
+  margin-left: 1vw;
   cursor: pointer;
-  font-size: 16px;
+  font-size: clamp(0.8rem, 1.8vw, 1rem);
   background: #FF4500;
   color: #fff;
   border: none;
   transition: background 0.2s;
+
 }
 
 #btnFloat:hover {
@@ -72,70 +99,51 @@
 
 /* ===================== Floating Area ===================== */
 #floatingArea {
+  flex: 1 1 auto;
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   overflow: hidden;
-  margin-top: 120px; /* เว้น UI ด้านบน */
 }
 
 /* กระทงและคำอธิษฐาน */
 .krathong {
   position: absolute;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse; /* ✅ สลับให้ข้อความอยู่ด้านบน */
   align-items: center;
   pointer-events: none;
 }
 
 .krathong img {
-  width: 60px;
+  width: clamp(50px, 10vw, 200px);
   height: auto;
 }
 
 .wishText {
-  margin-top: 5px;
+  margin-bottom: 0.5vh; /* ✅ เว้นระยะด้านล่างแทนด้านบน */
   color: #fff;
   font-weight: bold;
   text-shadow: 1px 1px 3px #000;
-  font-size: 14px;
+  font-size: clamp(0.8rem, 2vw, 1rem);
   text-align: center;
 }
 
-/* ===================== Responsive ===================== */
-@media screen and (max-width: 600px) {
-  .header {
-    font-size: 18px;
-  }
-  #krathongChoices img {
-    width: 35px;
-  }
-  #wishInput {
-    width: 60%;
-    font-size: 14px;
-  }
-  #btnFloat {
-    padding: 5px 10px;
-    font-size: 14px;
-  }
-  .krathong img {
-    width: 45px;
-  }
-  .wishText {
-    font-size: 12px;
-  }
-  #floatingArea {
-    margin-top: 90px;
-  }
-}
+/* ===================== พื้นหลังวิดีโอ ===================== */
 #bgVideo {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* ครอบเต็มจอ */
-  z-index: -1;       /* อยู่ใต้ทุกอย่าง */
+  object-fit: cover;
+  z-index: -1;
 }
 
-
+/* ===================== โลโก้โรงเรียน ===================== */
+.school-logo {
+  width: clamp(40px, 8vw, 100px);
+  height: auto;
+  vertical-align: middle;
+  margin-right: 1vw;
+}
