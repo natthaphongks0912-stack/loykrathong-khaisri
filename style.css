@@ -1,16 +1,23 @@
+/* ===================== Reset ===================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 /* ===================== UI Container ด้านบน ===================== */
 .ui-container {
-  position: fixed;       /* อยู่บนจอ */
+  position: fixed;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
   width: 95%;
   max-width: 800px;
-  background: rgba(0,0,0,0.5); /* โปร่งบาง อ่านง่าย */
+  background: rgba(0,0,0,0.5);
   padding: 10px 20px;
   border-radius: 10px;
   text-align: center;
-  z-index: 1000;         /* อยู่เหนือกระทง */
+  z-index: 1000;
 }
 
 /* ส่วนหัว */
@@ -23,7 +30,7 @@
 
 /* ===================== กระทงเลือก ===================== */
 #krathongChoices img {
-  width: 50px;       /* ปรับขนาดกระทง */
+  width: 50px;
   margin: 0 5px;
   cursor: pointer;
   border: 2px solid transparent;
@@ -67,9 +74,9 @@
 #floatingArea {
   position: relative;
   width: 100%;
-  height: 100vh;      /* ครอบจอทั้งหมด */
+  height: 100vh;
   overflow: hidden;
-  margin-top: 120px;  /* เว้น UI ด้านบน */
+  margin-top: 120px; /* เว้น UI ด้านบน */
 }
 
 /* กระทงและคำอธิษฐาน */
@@ -78,7 +85,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  pointer-events: none; /* ไม่บัง input / button */
+  pointer-events: none;
 }
 
 .krathong img {
@@ -116,5 +123,8 @@
   }
   .wishText {
     font-size: 12px;
+  }
+  #floatingArea {
+    margin-top: 90px;
   }
 }
