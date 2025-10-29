@@ -138,4 +138,19 @@
   z-index: -1;       /* อยู่ใต้ทุกอย่าง */
 }
 
+.school-logo {
+  width: 50px;       /* ขนาด Desktop */
+  height: auto;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+/* Responsive บนมือถือ */
+@media screen and (max-width: 600px) {
+  .school-logo {
+    width: 35px;
+    margin-right: 5px;
+  }
+}
+
 
