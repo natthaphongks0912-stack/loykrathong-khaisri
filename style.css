@@ -142,8 +142,9 @@ html, body {
 
 /* ===================== โลโก้โรงเรียน ===================== */
 .school-logo {
-  width: clamp(40px, 8vw, 100px);
+  width: clamp(40px, 6vw, 60px);
   height: auto;
   vertical-align: middle;
   margin-right: 1vw;
 }
+
