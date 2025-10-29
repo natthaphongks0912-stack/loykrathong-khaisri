@@ -140,7 +140,7 @@
 }
 
 .school-logo {
-  width: 60px;          /* ขนาด Desktop */
+  width: 100px;          /* ขนาด Desktop */
   height: auto;
   display: block;
   margin: 0 auto 5px auto;  /* กึ่งกลาง + เว้นระยะด้านล่าง */
@@ -161,5 +161,6 @@
     font-size: 18px;
   }
 }
+
 
 
