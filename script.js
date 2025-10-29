@@ -18,7 +18,7 @@ const btnFloat = document.getElementById("btnFloat");
 const wishInput = document.getElementById("wishInput");
 const floatingArea = document.getElementById("floatingArea");
 
-// เลือกแบบกระทง
+// เลือกกระทง
 let selectedKrathong = "1.png"; 
 const choices = document.querySelectorAll("#krathongChoices img");
 choices.forEach(choice => {
@@ -79,12 +79,4 @@ function createKrathongElement(imgSrc, wishText){
   floatingArea.appendChild(krathong);
 
   const duration = 12000 + Math.random()*5000;
-  krathong.style.transition = `transform ${duration}ms linear, opacity ${duration}ms linear`;
-
-  setTimeout(()=>{
-    krathong.style.transform = `translateX(${window.innerWidth + 200}px)`;
-    krathong.style.opacity = 0;
-  },50);
-
-  setTimeout(()=> krathong.remove(), duration + 1000);
-}
+  krathong.style.transition = `transform ${duration}ms
