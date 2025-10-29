@@ -7,18 +7,19 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Video Background -->
+  <!-- Background Video -->
   <video autoplay muted loop id="bgVideo">
     <source src="bg.mp4" type="video/mp4">
   </video>
 
+  <!-- Header -->
   <header>
-    <img src="logo.png" alt="โลโก้โรงเรียน" class="logo">
-    <h1 class="title">ลอยกระทงออนไลน์<br>โรงเรียนไขศรีปราโมชอนุสรณ์</h1>
+    <img src="logo.png" alt="Logo โรงเรียน" id="logo">
+    <h1>ลอยกระทงออนไลน์<br>โรงเรียนไขศรีปราโมชอนุสรณ์</h1>
   </header>
 
-  <div class="container">
-    <label>เลือกแบบกระทง</label>
+  <!-- Input / Buttons -->
+  <div id="controls">
     <div id="krathongChoices">
       <img src="1.png" data-src="1.png" class="choice selected">
       <img src="2.png" data-src="2.png" class="choice">
@@ -26,22 +27,18 @@
       <img src="4.png" data-src="4.png" class="choice">
       <img src="5.png" data-src="5.png" class="choice">
     </div>
-
-    <label>คำอธิษฐานของคุณ</label>
-    <textarea id="wishInput" placeholder="ขอให้มีความสุข สุขภาพร่างกายแข็งแรง..."></textarea>
-    <button id="btnFloat">ปล่อยกระทง</button>
+    <textarea id="wishInput" placeholder="พิมพ์คำอธิษฐานของคุณที่นี่..."></textarea>
+    <button id="btnFloat">ปล่อยกระทง 🎆</button>
   </div>
 
-  <!-- Floating area สำหรับกระทง -->
+  <!-- Floating Area -->
   <div id="floatingArea"></div>
 
-  <!-- Firebase v8 CDN -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
-  <!-- JS -->
+  <!-- Script -->
   <script src="script.js"></script>
 </body>
 </html>
-
-
