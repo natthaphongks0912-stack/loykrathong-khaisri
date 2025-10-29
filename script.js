@@ -79,3 +79,4 @@ function createKrathongElement(imgSrc, wishText) {
 
   setTimeout(() => krathong.remove(), duration + 1000);
 }
+
