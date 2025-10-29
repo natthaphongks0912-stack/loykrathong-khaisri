@@ -1,4 +1,4 @@
-// 🔥 Firebase Config
+// 🔥 Firebase Config (ยังคงไว้ถ้าต้องการ push)
 const firebaseConfig = {
   apiKey: "AIzaSyChhf-4w_Hya9kj_Hy_hNBJk_vlHzQWYnA",
   authDomain: "loykrathongkhaisri.firebaseapp.com",
@@ -19,7 +19,7 @@ const wishInput = document.getElementById("wishInput");
 const floatingArea = document.getElementById("floatingArea");
 
 // เลือกแบบกระทง
-let selectedKrathong = "1.png";
+let selectedKrathong = "1.png"; // ปรับตามชื่อไฟล์ของคุณ
 const choices = document.querySelectorAll("#krathongChoices img");
 choices.forEach(choice => {
   choice.addEventListener("click", () => {
@@ -29,34 +29,42 @@ choices.forEach(choice => {
   });
 });
 
-// ปล่อยกระทง
+// เก็บกระทงเฉพาะ session
+let sessionKrathongs = [];
+
+// ปุ่มปล่อยกระทง
 btnFloat.addEventListener("click", () => {
   const wishText = wishInput.value.trim();
   if (!wishText) {
     alert("กรุณาเขียนคำอธิษฐานก่อนลอยกระทง 🌕");
     return;
   }
+
   const krathong = {
     img: selectedKrathong,
     wish: wishText,
     time: Date.now()
   };
-  db.ref("krathongs").push(krathong);
+
+  // ลอยกระทงบนหน้าจอเฉพาะ session
+  createKrathongElement(krathong.img, krathong.wish);
+
+  // เก็บใน session array (ไม่เอากระทงเก่ากลับมา)
+  sessionKrathongs.push(krathong);
+
+  // ล้าง textarea
   wishInput.value = "";
+
+  // ✅ ถ้าต้องการให้คนอื่นเห็น สามารถ push ไป Firebase ได้
+  // db.ref("krathongs").push(krathong);
 });
 
-// ฟังข้อมูลเรียลไทม์
-db.ref("krathongs").on("child_added", snapshot => {
-  const data = snapshot.val();
-  createKrathongElement(data.img, data.wish);
-});
-
-// สร้างกระทงและให้ลอย
+// ฟังก์ชันสร้างกระทงและให้ลอย
 function createKrathongElement(imgSrc, wishText) {
   const krathong = document.createElement("div");
   krathong.className = "krathong";
   krathong.style.left = "-100px";
-  krathong.style.bottom = Math.random() * 200 + "px";
+  krathong.style.bottom = Math.random() * 200 + "px"; // ลอยสูงต่ำแบบสุ่ม
 
   const img = document.createElement("img");
   img.src = imgSrc;
@@ -69,7 +77,8 @@ function createKrathongElement(imgSrc, wishText) {
 
   floatingArea.appendChild(krathong);
 
-  const duration = 12000 + Math.random() * 5000;
+  // Animation จากซ้ายไปขวา
+  const duration = 12000 + Math.random() * 5000; // 12–17 วิ
   krathong.style.transition = `transform ${duration}ms linear, opacity ${duration}ms linear`;
 
   setTimeout(() => {
@@ -77,5 +86,6 @@ function createKrathongElement(imgSrc, wishText) {
     krathong.style.opacity = 0;
   }, 50);
 
+  // ลบออกหลังครบเวลา
   setTimeout(() => krathong.remove(), duration + 1000);
 }
