@@ -19,7 +19,7 @@ const wishInput = document.getElementById("wishInput");
 const floatingArea = document.getElementById("floatingArea");
 
 // เลือกแบบกระทง
-let selectedKrathong = "1.png"; // ปรับตามชื่อไฟล์ของคุณ
+let selectedKrathong = "1.png"; 
 const choices = document.querySelectorAll("#krathongChoices img");
 choices.forEach(choice => {
   choice.addEventListener("click", () => {
@@ -29,8 +29,8 @@ choices.forEach(choice => {
   });
 });
 
-// สร้าง sessionId แบบสุ่ม
-const sessionId = 'session_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
+// สร้าง sessionId
+const sessionId = 'session_' + Date.now() + '_' + Math.floor(Math.random()*1000);
 
 // ปุ่มปล่อยกระทง
 btnFloat.addEventListener("click", () => {
@@ -44,35 +44,28 @@ btnFloat.addEventListener("click", () => {
     img: selectedKrathong,
     wish: wishText,
     time: Date.now(),
-    sessionId: sessionId // บอกว่าเป็นกระทงของ session นี้
+    sessionId: sessionId
   };
 
-  // ลอยกระทงบนหน้าจอของตัวเอง
   createKrathongElement(krathong.img, krathong.wish);
-
-  // Push ไป Firebase ให้คนอื่นเห็น
   db.ref("krathongs").push(krathong);
-
-  // ล้าง textarea
   wishInput.value = "";
 });
 
-// ฟังทุกกระทงจาก Firebase
+// ฟังทุกกระทง
 db.ref("krathongs").on("child_added", snapshot => {
   const data = snapshot.val();
-  
-  // แสดงกระทงของคนอื่นหรือกระทงใหม่ แต่ไม่เอากระทงของ session ตัวเองก่อนหน้า
   if (!data.sessionId || data.sessionId !== sessionId) {
     createKrathongElement(data.img, data.wish);
   }
 });
 
-// ฟังก์ชันสร้างกระทงและให้ลอย
-function createKrathongElement(imgSrc, wishText) {
+// สร้างกระทงและลอย
+function createKrathongElement(imgSrc, wishText){
   const krathong = document.createElement("div");
   krathong.className = "krathong";
   krathong.style.left = "-100px";
-  krathong.style.bottom = Math.random() * 200 + "px"; // ลอยสูงต่ำแบบสุ่ม
+  krathong.style.bottom = Math.random()*200 + "px";
 
   const img = document.createElement("img");
   img.src = imgSrc;
@@ -85,15 +78,13 @@ function createKrathongElement(imgSrc, wishText) {
 
   floatingArea.appendChild(krathong);
 
-  // Animation จากซ้ายไปขวา
-  const duration = 12000 + Math.random() * 5000; // 12–17 วิ
+  const duration = 12000 + Math.random()*5000;
   krathong.style.transition = `transform ${duration}ms linear, opacity ${duration}ms linear`;
 
-  setTimeout(() => {
+  setTimeout(()=>{
     krathong.style.transform = `translateX(${window.innerWidth + 200}px)`;
     krathong.style.opacity = 0;
-  }, 50);
+  },50);
 
-  // ลบออกหลังครบเวลา
-  setTimeout(() => krathong.remove(), duration + 1000);
+  setTimeout(()=> krathong.remove(), duration + 1000);
 }
