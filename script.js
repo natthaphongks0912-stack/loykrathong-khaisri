@@ -1,4 +1,4 @@
-// 🔥 Firebase Config (ยังคงไว้ถ้าต้องการ push)
+// 🔥 Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyChhf-4w_Hya9kj_Hy_hNBJk_vlHzQWYnA",
   authDomain: "loykrathongkhaisri.firebaseapp.com",
@@ -32,6 +32,17 @@ choices.forEach(choice => {
 // เก็บกระทงเฉพาะ session
 let sessionKrathongs = [];
 
+// เวลาที่โหลดหน้าเว็บ (เพื่อไม่เอากระทงเก่ากลับมา)
+const startTime = Date.now();
+
+// ฟัง Firebase เฉพาะกระทงใหม่หลังหน้าโหลด
+db.ref("krathongs").on("child_added", snapshot => {
+  const data = snapshot.val();
+  if (data.time >= startTime) {
+    createKrathongElement(data.img, data.wish);
+  }
+});
+
 // ปุ่มปล่อยกระทง
 btnFloat.addEventListener("click", () => {
   const wishText = wishInput.value.trim();
@@ -46,17 +57,17 @@ btnFloat.addEventListener("click", () => {
     time: Date.now()
   };
 
-  // ลอยกระทงบนหน้าจอเฉพาะ session
+  // ลอยกระทงบนหน้าจอของตัวเอง
   createKrathongElement(krathong.img, krathong.wish);
 
-  // เก็บใน session array (ไม่เอากระทงเก่ากลับมา)
+  // เก็บใน session array
   sessionKrathongs.push(krathong);
+
+  // Push ไป Firebase ให้คนอื่นเห็น
+  db.ref("krathongs").push(krathong);
 
   // ล้าง textarea
   wishInput.value = "";
-
-  // ✅ ถ้าต้องการให้คนอื่นเห็น สามารถ push ไป Firebase ได้
-  // db.ref("krathongs").push(krathong);
 });
 
 // ฟังก์ชันสร้างกระทงและให้ลอย
