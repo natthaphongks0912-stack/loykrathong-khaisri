@@ -95,7 +95,6 @@
 }
 
 .wishText {
-  order: -1;
   margin-top: 5px;
   color: #fff;
   font-weight: bold;
@@ -162,6 +161,7 @@
     font-size: 18px;
   }
 }
+
 
 
 
