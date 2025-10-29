@@ -139,7 +139,7 @@
 }
 
 .school-logo {
-  width: 50px;       /* ขนาด Desktop */
+  width: 10px;       /* ขนาด Desktop */
   height: auto;
   vertical-align: middle;
   margin-right: 10px;
@@ -152,5 +152,6 @@
     margin-right: 5px;
   }
 }
+
 
 
