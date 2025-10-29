@@ -128,3 +128,13 @@
     margin-top: 90px;
   }
 }
+#bgVideo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* ครอบเต็มจอ */
+  z-index: -1;       /* อยู่ใต้ทุกอย่าง */
+}
+
