@@ -29,19 +29,8 @@ choices.forEach(choice => {
   });
 });
 
-// เก็บกระทงเฉพาะ session
-let sessionKrathongs = [];
-
-// เวลาที่โหลดหน้าเว็บ (เพื่อไม่เอากระทงเก่ากลับมา)
-const startTime = Date.now();
-
-// ฟัง Firebase เฉพาะกระทงใหม่หลังหน้าโหลด
-db.ref("krathongs").on("child_added", snapshot => {
-  const data = snapshot.val();
-  if (data.time >= startTime) {
-    createKrathongElement(data.img, data.wish);
-  }
-});
+// สร้าง sessionId แบบสุ่ม
+const sessionId = 'session_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
 
 // ปุ่มปล่อยกระทง
 btnFloat.addEventListener("click", () => {
@@ -54,20 +43,28 @@ btnFloat.addEventListener("click", () => {
   const krathong = {
     img: selectedKrathong,
     wish: wishText,
-    time: Date.now()
+    time: Date.now(),
+    sessionId: sessionId // บอกว่าเป็นกระทงของ session นี้
   };
 
   // ลอยกระทงบนหน้าจอของตัวเอง
   createKrathongElement(krathong.img, krathong.wish);
-
-  // เก็บใน session array
-  sessionKrathongs.push(krathong);
 
   // Push ไป Firebase ให้คนอื่นเห็น
   db.ref("krathongs").push(krathong);
 
   // ล้าง textarea
   wishInput.value = "";
+});
+
+// ฟังทุกกระทงจาก Firebase
+db.ref("krathongs").on("child_added", snapshot => {
+  const data = snapshot.val();
+  
+  // แสดงกระทงของคนอื่นหรือกระทงใหม่ แต่ไม่เอากระทงของ session ตัวเองก่อนหน้า
+  if (!data.sessionId || data.sessionId !== sessionId) {
+    createKrathongElement(data.img, data.wish);
+  }
 });
 
 // ฟังก์ชันสร้างกระทงและให้ลอย
