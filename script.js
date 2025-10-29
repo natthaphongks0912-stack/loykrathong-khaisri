@@ -19,7 +19,7 @@ const wishInput = document.getElementById("wishInput");
 const floatingArea = document.getElementById("floatingArea");
 
 // เลือกแบบกระทง
-let selectedKrathong = "krathong1.png";
+let selectedKrathong = "1.png";
 const choices = document.querySelectorAll("#krathongChoices img");
 choices.forEach(choice => {
   choice.addEventListener("click", () => {
@@ -79,4 +79,3 @@ function createKrathongElement(imgSrc, wishText) {
 
   setTimeout(() => krathong.remove(), duration + 1000);
 }
-
