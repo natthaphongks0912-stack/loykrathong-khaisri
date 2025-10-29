@@ -69,7 +69,8 @@ function createKrathongElement(imgSrc, wishText) {
 
     // Random start position: ซ้ายหรือขวา
     const fromLeft = Math.random() < 0.5;
-    krathong.style.bottom = Math.random() * 200 + "px";
+    const maxHeight = window.innerHeight * 0.2; // 20% ของหน้าจอด้านล่าง
+krathong.style.bottom = Math.random() * maxHeight + "px";
     krathong.style.left = fromLeft ? "-100px" : window.innerWidth + "px";
 
     // รูปกระทง
