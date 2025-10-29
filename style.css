@@ -8,7 +8,7 @@
 /* ===================== UI Container ด้านบน ===================== */
 .ui-container {
   position: fixed;
-  top: 0;
+  top: 10px;
   left: 50%;
   transform: translateX(-50%);
   width: 95%;
@@ -137,4 +137,5 @@
   object-fit: cover; /* ครอบเต็มจอ */
   z-index: -1;       /* อยู่ใต้ทุกอย่าง */
 }
+
 
