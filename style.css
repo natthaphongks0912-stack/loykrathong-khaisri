@@ -173,5 +173,9 @@ html, body {
     font-size: clamp(10px, 4vw, 12px);
   }
 }
+audio {
+  display: none; /* ซ่อน audio element */
+}
+
 
 
