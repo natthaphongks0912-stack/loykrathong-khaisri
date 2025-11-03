@@ -67,49 +67,53 @@ function createKrathongElement(imgSrc, wishText) {
     const krathong = document.createElement("div");
     krathong.className = "krathong";
 
-    // Random start position: ซ้ายหรือขวา
-    const fromLeft = Math.random() < 0.5;
-    const maxHeight = window.innerHeight * 0.2; // 20% ของหน้าจอด้านล่าง
-krathong.style.bottom = Math.random() * maxHeight + "px";
-    krathong.style.left = fromLeft ? "-100px" : window.innerWidth + "px";
+    // ✅ ชั้นใน สำหรับแอนิเมชันลอยขึ้นลง
+    const inner = document.createElement("div");
+    inner.className = "krathong-inner";
 
     // รูปกระทง
     const img = document.createElement("img");
     img.src = imgSrc;
-    krathong.appendChild(img);
+    inner.appendChild(img);
 
     // คำอธิษฐาน
     const wish = document.createElement("div");
     wish.className = "wishText";
     wish.textContent = wishText;
-    krathong.appendChild(wish);
+    inner.appendChild(wish);
 
+    // ใส่ inner ลง krathong
+    krathong.appendChild(inner);
     floatingArea.appendChild(krathong);
 
-  // Animation: 20–25 วินาที (ลอยช้าขึ้น)
-const duration = 20000 + Math.random() * 5000;
-const distance = window.innerWidth + 200;
+    // ✅ กำหนดตำแหน่งเริ่ม
+    const fromLeft = Math.random() < 0.5;
+    const maxHeight = window.innerHeight * 0.2;
+    krathong.style.bottom = Math.random() * maxHeight + "px";
+    krathong.style.left = fromLeft ? "-150px" : window.innerWidth + 150 + "px";
 
-// ตั้ง transition
-krathong.style.transition = `transform ${duration}ms linear`;
+    // ✅ ลอยแนวนอน
+    const duration = 20000 + Math.random() * 5000;
+    const distance = window.innerWidth + 200;
+    krathong.style.transition = `transform ${duration}ms linear`;
 
-// เริ่มลอยไป
-setTimeout(() => {
-    krathong.style.transform = fromLeft
-        ? `translateX(${distance}px)`
-        : `translateX(${-distance}px)`;
-}, 50);
+    // ลอยไป
+    setTimeout(() => {
+        krathong.style.transform = fromLeft
+            ? `translateX(${distance}px)`
+            : `translateX(${-distance}px)`;
+    }, 50);
 
-// หลังจากครบเวลา → ลอยกลับ
-setTimeout(() => {
-    krathong.style.transform = fromLeft
-        ? `translateX(${-distance}px)`
-        : `translateX(${distance}px)`;
-}, duration + 100); // เริ่มกลับหลังจบรอบแรก
+    // ลอยกลับ
+    setTimeout(() => {
+        krathong.style.transition = `transform ${duration * 1.1}ms linear`;
+        krathong.style.transform = fromLeft
+            ? `translateX(${-distance}px)`
+            : `translateX(${distance}px)`;
+    }, duration + 100);
 
-// ลบหลังจากลอยครบ 2 รอบ (ไป–กลับ)
-setTimeout(() => krathong.remove(), duration * 2 + 2000);
-
+    // ลบหลังครบ 2 รอบ
+    setTimeout(() => krathong.remove(), duration * 2 + 2000);
 }
 
 // ===================== ลบกระทงเก่าเกิน 2 นาทีจาก Database =====================
@@ -151,4 +155,5 @@ setInterval(() => {
         }
     });
 }, 20000); // 🔁 ทำซ้ำทุก 20 วินาที
+
 
