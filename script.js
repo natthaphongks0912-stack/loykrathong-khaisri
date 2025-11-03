@@ -155,5 +155,18 @@ setInterval(() => {
         }
     });
 }, 20000); // 🔁 ทำซ้ำทุก 20 วินาที
+const bgMusic = document.getElementById("bgMusic");
+const playBtn = document.getElementById("playMusicBtn");
+
+playBtn.addEventListener("click", () => {
+    if (bgMusic.paused) {
+        bgMusic.play();
+        playBtn.textContent = "?? ????????";
+    } else {
+        bgMusic.pause();
+        playBtn.textContent = "?? ????????";
+    }
+});
+
 
 
