@@ -147,6 +147,14 @@ html, body {
   vertical-align: middle;
   margin-right: 1vw;
 }
+.krathong {
+  animation: floatY 3s ease-in-out infinite alternate;
+}
+
+@keyframes floatY {
+  from { transform: translateY(0px); }
+  to { transform: translateY(-10px); }
+}
 
 
 
