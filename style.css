@@ -122,7 +122,7 @@ html, body {
 
 /* ขนาดรูปกระทง */
 .krathong img {
-  width: clamp(95px, 20vw, 120px);
+  width: clamp(105px, 25vw, 250px);
   height: auto;
 }
 
@@ -173,4 +173,5 @@ html, body {
     font-size: clamp(10px, 4vw, 12px);
   }
 }
+
 
