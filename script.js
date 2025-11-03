@@ -86,20 +86,30 @@ krathong.style.bottom = Math.random() * maxHeight + "px";
 
     floatingArea.appendChild(krathong);
 
-    // Animation: 10–15 วินาที
-    const duration = 10000 + Math.random()*5000;
-    const distance = window.innerWidth + 200;
+  // Animation: 20–25 วินาที (ลอยช้าขึ้น)
+const duration = 20000 + Math.random() * 5000;
+const distance = window.innerWidth + 200;
 
-    krathong.style.transition = `transform ${duration}ms linear, opacity ${duration}ms linear`;
-    setTimeout(() => {
-        krathong.style.transform = fromLeft
-            ? `translateX(${distance}px)`
-            : `translateX(${-distance}px)`;
-        krathong.style.opacity = 0;
-    }, 50);
+// ตั้ง transition
+krathong.style.transition = `transform ${duration}ms linear`;
 
-    // ลบหลัง animation
-    setTimeout(() => krathong.remove(), duration + 1000);
+// เริ่มลอยไป
+setTimeout(() => {
+    krathong.style.transform = fromLeft
+        ? `translateX(${distance}px)`
+        : `translateX(${-distance}px)`;
+}, 50);
+
+// หลังจากครบเวลา → ลอยกลับ
+setTimeout(() => {
+    krathong.style.transform = fromLeft
+        ? `translateX(${-distance}px)`
+        : `translateX(${distance}px)`;
+}, duration + 100); // เริ่มกลับหลังจบรอบแรก
+
+// ลบหลังจากลอยครบ 2 รอบ (ไป–กลับ)
+setTimeout(() => krathong.remove(), duration * 2 + 2000);
+
 }
 
 // ===================== ลบกระทงเก่าเกิน 2 นาทีจาก Database =====================
@@ -113,3 +123,4 @@ setInterval(() => {
         });
     });
 }, 60*1000); // ตรวจทุก 1 นาที
+
