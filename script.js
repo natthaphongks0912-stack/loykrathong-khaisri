@@ -123,4 +123,32 @@ setInterval(() => {
         });
     });
 }, 60*1000); // ตรวจทุก 1 นาที
+// ===================== สุ่มแสดงกระทงทุก 20 วินาที =====================
+setInterval(() => {
+    db.ref("krathongs").once("value", snapshot => {
+        const now = Date.now();
+        const activeKrathongs = [];
+
+        // ดึงเฉพาะที่ยังไม่หมดเวลา (ไม่เกิน 2 นาที)
+        snapshot.forEach(child => {
+            const data = child.val();
+            if (now - data.time <= 2 * 60 * 1000) {
+                activeKrathongs.push(data);
+            }
+        });
+
+        // ถ้ามีกระทงเหลือ
+        if (activeKrathongs.length > 0) {
+            // สุ่มจำนวน 2–3 กระทง
+            const numToShow = Math.floor(Math.random() * 2) + 2; // 2 หรือ 3
+            const shuffled = activeKrathongs.sort(() => 0.5 - Math.random());
+            const selected = shuffled.slice(0, numToShow);
+
+            // แสดงผล
+            selected.forEach(k => {
+                createKrathongElement(k.img, k.wish);
+            });
+        }
+    });
+}, 20000); // 🔁 ทำซ้ำทุก 20 วินาที
 
